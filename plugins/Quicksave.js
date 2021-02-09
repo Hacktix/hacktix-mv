@@ -8,16 +8,34 @@ Imported.Quicksave = true;
 
 var Hacktix = Hacktix || {};
 Hacktix.Quicksave = Hacktix.Quicksave || {};
-Hacktix.Quicksave.version = 1.0;
+Hacktix.Quicksave.version = 1.1;
 
 //=============================================================================
 /*:
- * @plugindesc v1.0 A plugin that adds simple quicksaves to the game,
+ * @plugindesc v1.1 A plugin that adds simple quicksaves to the game,
  * allowing players to save and load game states on the fly.
  * @author Hacktix
  * 
  * @help
- * TODO: Actually write stuff here
+ * ============================================================================
+ * Basic Introduction
+ * ============================================================================
+ * 
+ * The Quicksave Plugin allows players to create "quicksaves", which are
+ * save files that don't actually use up any save slots, and are only
+ * available until the game is closed. These can be created and loaded at
+ * any time during the game, either through the provided menu options or
+ * through Plugin Commands.
+ * 
+ * ============================================================================
+ * Plugin Commands
+ * ============================================================================
+ * 
+ *   Quicksave Save
+ *   - Creates a Quicksave File
+ * 
+ *   Quicksave Load
+ *   - Loads a Quicksave (if one was created, does nothing otherwise)
  * 
  * @param Quicksave Creation Label
  * @desc Text for the Quicksave Creation button in the menu.
@@ -83,3 +101,29 @@ Scene_Menu.prototype.createCommandWindow = function() {
     this._commandWindow.setHandler('createquicksave', this.commandCreateQuicksave.bind(this));
     this._commandWindow.setHandler('loadquicksave', this.commandLoadQuicksave.bind(this));
 };
+
+//=============================================================================
+// Game_Interpreter
+//=============================================================================
+
+Hacktix.Quicksave.Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+Game_Interpreter.prototype.pluginCommand = function(command, args) {
+    Hacktix.Quicksave.Game_Interpreter_pluginCommand.call(this, command, args);
+    if(command === "Quicksave")
+        this.processQuicksavePluginCommands(args.join(" ").trim());
+}
+
+Game_Interpreter.prototype.processQuicksavePluginCommands = function(line) {
+    if(line.match(/SAVE/i)) {
+        Hacktix.Quicksave.save = JsonEx.stringify(DataManager.makeSaveContents());
+    } else if(line.match(/LOAD/i)) {
+        if(Hacktix.Quicksave.save) {
+            var json = Hacktix.Quicksave.save;
+            DataManager.createGameObjects();
+            DataManager.extractSaveContents(JsonEx.parse(json));
+            SceneManager._scene.fadeOutAll();
+            Scene_Load.prototype.reloadMapIfUpdated();
+            SceneManager.goto(Scene_Map);
+        }
+    }
+}
