@@ -12,28 +12,45 @@ Hacktix.Quicksave.version = 1.0;
 
 //=============================================================================
 /*:
- * @plugindesc A plugin that adds simple quicksaves to the game, allowing players to save and load game states on the fly.
+ * @plugindesc v1.0 A plugin that adds simple quicksaves to the game,
+ * allowing players to save and load game states on the fly.
  * @author Hacktix
  * 
  * @help
  * TODO: Actually write stuff here
+ * 
+ * @param Quicksave Creation Label
+ * @desc Text for the Quicksave Creation button in the menu.
+ * @type text
+ * @default Create Quicksave
+ * 
+ * @param Quicksave Loading Label
+ * @desc Text for the Quicksave Loading button in the menu.
+ * @type text
+ * @default Load Quicksave
  */
 //=============================================================================
+
+//=============================================================================
+// Parameters
+//=============================================================================
+
+Hacktix.Quicksave.param = PluginManager.parameters('Quicksave');
+Hacktix.Quicksave.Dict = {
+    createString: String(Hacktix.Quicksave.param['Quicksave Creation Label']),
+    loadString: String(Hacktix.Quicksave.param['Quicksave Loading Label'])
+};
 
 //=============================================================================
 // Window_MenuCommand
 //=============================================================================
 
 Window_MenuCommand.prototype.addQuicksaveCommand = function() {
-    // TODO: Allow modification of "Quicksave" strings
-    // TODO: Allow disabling/enabling quicksaves
-    let createString = "Create Quicksave";
-    let loadString = "Load Quicksave";
     let enableQuicksaveCreate = true;
     let enableQuicksaveLoad = !!Hacktix.Quicksave.save;
 
-    this.addCommand(createString, 'createquicksave', enableQuicksaveCreate);
-    this.addCommand(loadString, 'loadquicksave', enableQuicksaveLoad);
+    this.addCommand(Hacktix.Quicksave.Dict.createString, 'createquicksave', enableQuicksaveCreate);
+    this.addCommand(Hacktix.Quicksave.Dict.loadString, 'loadquicksave', enableQuicksaveLoad);
 };
 
 Hacktix.Quicksave.Window_MenuCommand_addSaveCommand = Window_MenuCommand.prototype.addSaveCommand;
