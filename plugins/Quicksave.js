@@ -8,11 +8,11 @@ Imported.Quicksave = true;
 
 var Hacktix = Hacktix || {};
 Hacktix.Quicksave = Hacktix.Quicksave || {};
-Hacktix.Quicksave.version = 1.1;
+Hacktix.Quicksave.version = 1.11;
 
 //=============================================================================
 /*:
- * @plugindesc v1.1 A plugin that adds simple quicksaves to the game,
+ * @plugindesc v1.11 A plugin that adds simple quicksaves to the game,
  * allowing players to save and load game states on the fly.
  * @author Hacktix
  * 
@@ -46,6 +46,13 @@ Hacktix.Quicksave.version = 1.1;
  * @desc Text for the Quicksave Loading button in the menu.
  * @type text
  * @default Load Quicksave
+ * 
+ * @param Show Quicksave Menu Options
+ * @desc Whether or not the menu options for Quicksaves should be shown.
+ * @type boolean
+ * @default true
+ * @on Yes
+ * @off No
  */
 //=============================================================================
 
@@ -58,6 +65,7 @@ Hacktix.Quicksave.Dict = {
     createString: String(Hacktix.Quicksave.param['Quicksave Creation Label']),
     loadString: String(Hacktix.Quicksave.param['Quicksave Loading Label'])
 };
+Hacktix.Quicksave.showInMenu = eval(Hacktix.Quicksave.param['Show Quicksave Menu Options']);
 
 //=============================================================================
 // Window_MenuCommand
@@ -74,7 +82,9 @@ Window_MenuCommand.prototype.addQuicksaveCommand = function() {
 Hacktix.Quicksave.Window_MenuCommand_addSaveCommand = Window_MenuCommand.prototype.addSaveCommand;
 Window_MenuCommand.prototype.addSaveCommand = function() {
     Hacktix.Quicksave.Window_MenuCommand_addSaveCommand.call(this);
-    this.addQuicksaveCommand();
+    if(Hacktix.Quicksave.showInMenu) {
+        this.addQuicksaveCommand();
+    }
 };
 
 //=============================================================================
@@ -98,8 +108,10 @@ Scene_Menu.prototype.commandLoadQuicksave = function() {
 Hacktix.Quicksave.Scene_Menu_createCommandWindow = Scene_Menu.prototype.createCommandWindow;
 Scene_Menu.prototype.createCommandWindow = function() {
     Hacktix.Quicksave.Scene_Menu_createCommandWindow.call(this);
-    this._commandWindow.setHandler('createquicksave', this.commandCreateQuicksave.bind(this));
-    this._commandWindow.setHandler('loadquicksave', this.commandLoadQuicksave.bind(this));
+    if(Hacktix.Quicksave.showInMenu) {
+        this._commandWindow.setHandler('createquicksave', this.commandCreateQuicksave.bind(this));
+        this._commandWindow.setHandler('loadquicksave', this.commandLoadQuicksave.bind(this));
+    }
 };
 
 //=============================================================================
