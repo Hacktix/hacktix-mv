@@ -8,11 +8,11 @@ Imported.Quicksave = true;
 
 var Hacktix = Hacktix || {};
 Hacktix.Quicksave = Hacktix.Quicksave || {};
-Hacktix.Quicksave.version = 1.12;
+Hacktix.Quicksave.version = 1.13;
 
 //=============================================================================
 /*:
- * @plugindesc v1.12 A plugin that adds simple quicksaves to the game,
+ * @plugindesc v1.13 A plugin that adds simple quicksaves to the game,
  * allowing players to save and load game states on the fly.
  * @author Hacktix
  * 
@@ -51,6 +51,10 @@ Hacktix.Quicksave.version = 1.12;
  * 
  *   Quicksave Delete
  *   - Deletes a Quicksave (if one was created, does nothing otherwise)
+ * 
+ *   Quicksave Show
+ *   Quicksave Hide
+ *   - Enables/Disables the Quicksave Menu Options respectively
  * 
  * @param Quicksave Creation Label
  * @desc Text for the Quicksave Creation button in the menu.
@@ -154,5 +158,9 @@ Game_Interpreter.prototype.processQuicksavePluginCommands = function(line) {
         }
     } else if(line.match(/DELETE/i)) {
         Hacktix.Quicksave.save = null;
+    } else if(line.match(/SHOW/i)) {
+        Hacktix.Quicksave.showInMenu = true;
+    } else if(line.match(/HIDE/i)) {
+        Hacktix.Quicksave.showInMenu = false;
     }
 }
