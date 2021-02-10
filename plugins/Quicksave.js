@@ -8,11 +8,11 @@ Imported.Quicksave = true;
 
 var Hacktix = Hacktix || {};
 Hacktix.Quicksave = Hacktix.Quicksave || {};
-Hacktix.Quicksave.version = 1.11;
+Hacktix.Quicksave.version = 1.12;
 
 //=============================================================================
 /*:
- * @plugindesc v1.11 A plugin that adds simple quicksaves to the game,
+ * @plugindesc v1.12 A plugin that adds simple quicksaves to the game,
  * allowing players to save and load game states on the fly.
  * @author Hacktix
  * 
