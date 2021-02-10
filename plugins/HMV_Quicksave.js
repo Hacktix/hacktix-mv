@@ -1,6 +1,6 @@
 //=============================================================================
 // Hacktix Plugins - Quicksave
-// Quicksave.js
+// HMV_Quicksave.js
 //=============================================================================
 
 var Imported = Imported || {};
@@ -79,7 +79,7 @@ Hacktix.Quicksave.version = 1.13;
 // Parameters
 //=============================================================================
 
-Hacktix.Quicksave.param = PluginManager.parameters('Quicksave');
+Hacktix.Quicksave.param = PluginManager.parameters('HMV_Quicksave');
 Hacktix.Quicksave.Dict = {
     createString: String(Hacktix.Quicksave.param['Quicksave Creation Label']),
     loadString: String(Hacktix.Quicksave.param['Quicksave Loading Label'])
