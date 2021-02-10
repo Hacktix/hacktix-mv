@@ -28,6 +28,18 @@ Hacktix.Quicksave.version = 1.11;
  * through Plugin Commands.
  * 
  * ============================================================================
+ * Scripted Conditional Branches
+ * ============================================================================
+ * 
+ * It's possible to determine whether or not a Quicksave was already created
+ * using the following line within a Scripted Conditional Branch:
+ * 
+ *   Hacktix.Quicksave.save
+ * 
+ * The Conditional Branch will only be entered if a Quicksave exists.
+ * Otherwise, if it exists, the else-branch will be entered.
+ * 
+ * ============================================================================
  * Plugin Commands
  * ============================================================================
  * 
