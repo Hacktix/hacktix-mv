@@ -49,6 +49,9 @@ Hacktix.Quicksave.version = 1.11;
  *   Quicksave Load
  *   - Loads a Quicksave (if one was created, does nothing otherwise)
  * 
+ *   Quicksave Delete
+ *   - Deletes a Quicksave (if one was created, does nothing otherwise)
+ * 
  * @param Quicksave Creation Label
  * @desc Text for the Quicksave Creation button in the menu.
  * @type text
@@ -149,5 +152,7 @@ Game_Interpreter.prototype.processQuicksavePluginCommands = function(line) {
             Scene_Load.prototype.reloadMapIfUpdated();
             SceneManager.goto(Scene_Map);
         }
+    } else if(line.match(/DELETE/i)) {
+        Hacktix.Quicksave.save = null;
     }
 }
