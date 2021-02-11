@@ -8,11 +8,11 @@ Imported.HacktixUI = true;
 
 var Hacktix = Hacktix || {};
 Hacktix.UI = Hacktix.UI || {};
-Hacktix.UI.version = 1.0;
+Hacktix.UI.version = 1.1;
 
 //=============================================================================
 /*:
- * @plugindesc v1.0 A requirement for Hacktix MV Plugins utilizing custom
+ * @plugindesc v1.1 A requirement for Hacktix MV Plugins utilizing custom
  * User Interfaces and Menus.
  * @author Hacktix
  * 
