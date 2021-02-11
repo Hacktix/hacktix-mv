@@ -113,7 +113,7 @@ Window_ItemCapacity.prototype.initialize = function() {
 Window_ItemCapacity.prototype.setCategory = function(category) {
     if (this._category !== category) {
         this._category = category;
-        this.refresh();
+        this.recalculateCapacity();
     }
 }
 
@@ -137,7 +137,7 @@ Window_ItemCapacity.prototype.recalculateCapacity = function() {
     $gameParty.allItems().filter(function(item) {
         return this.includes(item);
     }, this).forEach(item => {
-        usedCapacity += item.note.match(/<ITEMWEIGHT:(\d+)>/i) ? parseInt(RegExp.$1) : 0;
+        usedCapacity += $gameParty.numItems(item) * (item.note.match(/<ITEMWEIGHT:(\d+)>/i) ? parseInt(RegExp.$1) : 0);
     });
     this._text = `Capacity: ${usedCapacity}/100`;
     this.refresh();
