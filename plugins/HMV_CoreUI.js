@@ -54,8 +54,55 @@ Hacktix.UI.version = 1.0;
  *                                           should be enabled
  *                }
  * 
+ * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ *  Window_HacktixLabel
+ * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ * 
+ * The Window_HacktixLabel class allows for creation of helptext boxes and
+ * is based on the Window_Help class. All relevant parameters can be set in
+ * the constructor of the class:
+ * 
+ *   new Window_HacktixLabel(<x>, <y>, <w>, [<text>], [<lines>]);
+ * 
+ *   <x/y>   - The x- and y-Coordinates the window should have on screen
+ *   <w>     - The width of the window measured in pixels
+ *   <text>  - Optional, the text which should be displayed in the box
+ *             (Default: Empty String)
+ *   <lines> - Optional, the amount of lines the box should be able to
+ *             display at most (Default: 2)
+ * 
  */
 //=============================================================================
+
+//=============================================================================
+// Window_HacktixLabel
+//=============================================================================
+
+function Window_HacktixLabel() {
+    this.initialize.apply(this, arguments);
+}
+
+Window_HacktixLabel.prototype = Object.create(Window_Base.prototype);
+Window_HacktixLabel.prototype.constructor = Window_HacktixLabel;
+
+Window_HacktixLabel.prototype.initialize = function(x, y, w, text = '', numLines = 2) {
+    var width = w || Graphics.boxWidth;
+    var height = this.fittingHeight(numLines || 2);
+    Window_Base.prototype.initialize.call(this, x, y, width, height);
+    this.setText(text);
+};
+
+Window_HacktixLabel.prototype.setText = function(text) {
+    if (this._text !== text) {
+        this._text = text;
+        this.refresh();
+    }
+};
+
+Window_HacktixLabel.prototype.refresh = function() {
+    this.contents.clear();
+    this.drawTextEx(this._text, this.textPadding(), 0);
+};
 
 //=============================================================================
 // Window_HacktixCommand
