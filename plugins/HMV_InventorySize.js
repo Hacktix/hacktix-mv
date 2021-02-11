@@ -163,3 +163,73 @@ Window_ItemCategory.prototype.update = function() {
         this._capacityWindow.setCategory(this.currentSymbol());
     }
 };
+
+//=============================================================================
+// Game_Interpreter
+//=============================================================================
+
+Game_Interpreter.prototype.showItemDiscardMenu = function(item, amount) {
+
+    // TODO: Implement actual item discard menu
+
+}
+
+// Change Items
+Hacktix.InventorySize.Game_Interpreter_command126 = Game_Interpreter.prototype.command126;
+Game_Interpreter.prototype.command126 = function() {
+    let value = this.operateValue(this._params[1], this._params[2], this._params[3]);
+    let item = $dataItems[this._params[0]];
+    let itemWeight = (item.note.match(/<ITEMWEIGHT:(\d+)>/i) ? parseInt(RegExp.$1) : 0) * value;
+    if(itemWeight > (100 - this.calculateCapacity('item'))) {
+        this.showItemDiscardMenu(item, value);
+        return true;
+    } else
+        return Hacktix.InventorySize.Game_Interpreter_command126.call(this);
+};
+
+// Change Weapons
+Hacktix.InventorySize.Game_Interpreter_command127 = Game_Interpreter.prototype.command127;
+Game_Interpreter.prototype.command127 = function() {
+    let value = this.operateValue(this._params[1], this._params[2], this._params[3]);
+    let item = $dataItems[this._params[0]];
+    let itemWeight = (item.note.match(/<ITEMWEIGHT:(\d+)>/i) ? parseInt(RegExp.$1) : 0) * value;
+    if(itemWeight > (100 - this.calculateCapacity('weapon'))) {
+        this.showItemDiscardMenu(item, value);
+        return true;
+    } else
+        return Hacktix.InventorySize.Game_Interpreter_command127.call(this);
+};
+
+// Change Armors
+Hacktix.InventorySize.Game_Interpreter_command128 = Game_Interpreter.prototype.command128;
+Game_Interpreter.prototype.command128 = function() {
+    let value = this.operateValue(this._params[1], this._params[2], this._params[3]);
+    let item = $dataItems[this._params[0]];
+    let itemWeight = (item.note.match(/<ITEMWEIGHT:(\d+)>/i) ? parseInt(RegExp.$1) : 0) * value;
+    if(itemWeight > (100 - this.calculateCapacity('armor'))) {
+        this.showItemDiscardMenu(item, value);
+        return true;
+    } else
+        return Hacktix.InventorySize.Game_Interpreter_command128.call(this);
+};
+
+Game_Interpreter.prototype.calculateCapacity = function(category) {
+    let usedCapacity = 0;
+    $gameParty.allItems().filter(function(item) {
+        switch (category) {
+            case 'item':
+                return DataManager.isItem(item) && item.itypeId === 1;
+            case 'weapon':
+                return DataManager.isWeapon(item);
+            case 'armor':
+                return DataManager.isArmor(item);
+            case 'keyItem':
+                return DataManager.isItem(item) && item.itypeId === 2;
+            default:
+                return false;
+        }
+    }, this).forEach(item => {
+        usedCapacity += $gameParty.numItems(item) * (item.note.match(/<ITEMWEIGHT:(\d+)>/i) ? parseInt(RegExp.$1) : 0);
+    });
+    return usedCapacity;
+}
